@@ -1,0 +1,17 @@
+@import '../../../styles.scss';
+
+.btn-teal {
+  @extend .rounded;
+  border: 2px solid $teal;
+  text-decoration: none;
+  margin-top: -1rem;
+  padding: 0.5rem;
+  color: $teal;
+  transition: 0.2s all ease;
+  z-index: 999;
+}
+
+.btn-teal:hover {
+  color: #FAFAFA;
+  background-color: $teal;
+}

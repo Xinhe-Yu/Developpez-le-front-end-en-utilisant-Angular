@@ -1,0 +1,66 @@
+<div *ngIf="country$ | async as country">
+
+  <div class="bg-teal rounded page-title">{{ country.country }}</div>
+
+  <div class="cards">
+    <div class="card">
+      <h5 class="card-title">
+        Nombre des entrées
+      </h5>
+      <p class="card-content">
+        {{ country.participations.length }}
+      </p>
+    </div>
+
+    <div class="card">
+      <h5 class="card-title">
+        Nombre des médailles
+      </h5>
+      <p class="card-content" *ngIf="country.participations">
+        {{ getTotalMedals(country) }}
+      </p>
+    </div>
+
+    <div class="card">
+      <h5 class="card-title">
+        Nombre des athlètes
+      </h5>
+      <p class="card-content" *ngIf="country.participations">
+        {{ getTotalAthletes(country)}}
+      </p>
+    </div>
+
+  </div>
+  <!-- <ng-container *ngIf="chartData$ | async as chartData"> -->
+  <div class="chart">
+
+    <ngx-charts-line-chart [results]="chartData" [xAxis]="xAxis" [yAxis]="yAxis" [showXAxisLabel]="showXAxisLabel"
+      [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [timeline]="timeline"
+      [autoScale]="autoscale" [yScaleMax]="yScaleMax" [yScaleMin]="yScaleMin" [yAxisTickFormatting]="formatYAxis">
+      <ng-template #tooltipTemplate let-model="model">
+        <div class="custom-tooltip">
+          <div class="custom-tooltip">
+            <span class="tooltip-label">{{model.name}}</span>
+            <span class="tooltip-val">
+              <img src="../../../assets/icons/medal-solid.svg" alt="medal" class="tooltip-icon">
+              {{model.value}}
+            </span>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template #seriesTooltipTemplate let-model="model">
+        <div class="custom-tooltip">
+          <div class="custom-tooltip">
+            <span class="tooltip-label">{{model[0].name}}</span>
+            <span class="tooltip-val">
+              {{model[0].extra.city}}
+            </span>
+          </div>
+        </div>
+      </ng-template>
+    </ngx-charts-line-chart>
+    <!-- </ng-container> -->
+  </div>
+</div>
+
+<a class="btn-teal" routerLink="">Retour à l'accueil</a>

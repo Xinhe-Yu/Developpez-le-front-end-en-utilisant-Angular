@@ -1,4 +1,5 @@
 export interface PieChartData {
-  name: string;
+  name: string | number;
   value: number;
+  extra?: { id?: number, city?: string };
 }
