@@ -1,53 +1,45 @@
 <div class="bg-teal rounded page-title">Medailles par pays</div>
 
 <div *ngIf="olympics$ | async as olympics">
-  <div class="cards">
 
-    <div class="card">
-      <h5 class="card-title">
-        Nombre des JOs
-      </h5>
-      <p class="card-content">
-        {{ olympics[1].participations.length }}
-      </p>
-    </div>
+  <div *ngIf="olympics.length > 0">
+    <div class="cards">
+      <div class="card">
+        <h5 class="card-title">
+          Nombre des JOs
+        </h5>
+        <p class="card-content">
+          {{ olympics[1].participations.length }}
+        </p>
+      </div>
 
-    <div class="card">
-      <h5 class="card-title">
-        Nombre des pays
-      </h5>
-      <p class="card-content">
-        {{ olympics.length }}
-      </p>
-    </div>
-  </div>
-
-  <ng-container *ngIf="chartData$ | async as chartData">
-
-    <div *ngIf="chartData.length > 0; else noData">
-      <div class="chart">
-        <ngx-charts-pie-chart [results]="chartData" [gradient]="gradient" [legend]="showLegend" [labels]="showLabels"
-          [doughnut]="isDoughnut" [maxLabelLength]="maxLabelLength" (select)="onSelect($event)">
-          <ng-template #tooltipTemplate let-model="model">
-            <div class="custom-tooltip">
-              <span class="tooltip-label">{{model.name}}</span>
-              <span class="tooltip-val">
-                <img src="../../../assets/icons/medal-solid.svg" alt="medal" class="tooltip-icon">
-                {{model.value}}
-              </span>
-            </div>
-          </ng-template>
-        </ngx-charts-pie-chart>
-
+      <div class="card">
+        <h5 class="card-title">
+          Nombre des pays
+        </h5>
+        <p class="card-content">
+          {{ olympics.length }}
+        </p>
       </div>
     </div>
-    <ng-template #noData>
-      <p>Waiting for loading chart...</p>
-    </ng-template>
 
-  </ng-container>
+    <div class="chart-container">
+      <ngx-charts-pie-chart [results]="chartData" [gradient]="gradient" [legend]="showLegend" [labels]="showLabels"
+        [doughnut]="isDoughnut" [maxLabelLength]="maxLabelLength" (select)="onSelect($event)">
+        <ng-template #tooltipTemplate let-model="model">
+          <div class="custom-tooltip">
+            <span class="tooltip-label">{{model.name}}</span>
+            <span class="tooltip-val">
+              <img src="../../../assets/icons/medal-solid.svg" alt="medal" class="tooltip-icon">
+              {{model.value}}
+            </span>
+          </div>
+        </ng-template>
+      </ngx-charts-pie-chart>
+    </div>
+
+  </div>
 </div>
 
 
-
-<div *ngIf="(olympics$ | async) === null">Loading...</div>
+<div class="card" *ngIf="(olympics$ | async)?.length === 0">Loading...</div>

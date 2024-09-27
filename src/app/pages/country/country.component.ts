@@ -1,7 +1,7 @@
 import { AsyncPipe, NgIf } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { OlympicService } from 'src/app/core/services/olympic.service';
 import { Olympic } from 'src/app/core/models/Olympic';
@@ -21,7 +21,8 @@ import { Participation } from 'src/app/core/models/Participation';
   templateUrl: './country.component.html',
   styleUrl: './country.component.scss'
 })
-export class CountryComponent {
+
+export class CountryComponent implements OnInit, OnDestroy {
   country$!: Observable<Olympic>;
   numberOfMedals!: number;
   numberOfAthletes!: number;
@@ -37,6 +38,7 @@ export class CountryComponent {
   autoscale: boolean = true;
   yScaleMin: number = 0;
   yScaleMax: number = 500;
+  private countrySubscription!: Subscription;
 
   constructor(
     private olympicService: OlympicService,
@@ -45,9 +47,15 @@ export class CountryComponent {
 
   ngOnInit(): void {
     this.getCountry();
-    this.country$.subscribe((country: Olympic) => {
+    this.countrySubscription = this.country$.subscribe((country: Olympic) => {
       this.chartData = this.getChartData(country)
     })
+  }
+
+  ngOnDestroy(): void {
+    if (this.countrySubscription && !this.countrySubscription.closed) {
+      this.countrySubscription.unsubscribe();
+    }
   }
 
   getTotalMedals(country: Olympic): number {

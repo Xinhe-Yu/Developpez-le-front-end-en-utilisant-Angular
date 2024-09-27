@@ -10,11 +10,11 @@ import { Olympic } from '../models/Olympic';
 
 export class OlympicService {
   private olympicUrl = './assets/mock/olympic.json';
-  private olympics$ = new BehaviorSubject<Olympic[] | null>(null);
+  private olympics$ = new BehaviorSubject<Olympic[]>([]);
 
   constructor(private http: HttpClient) { }
 
-  loadInitialData(): Observable<Olympic[] | null> {
+  loadInitialData(): Observable<Olympic[]> {
     return this.http.get<Olympic[]>(this.olympicUrl).pipe(
       tap((value) => this.olympics$.next(value)),
       shareReplay(1),
@@ -22,14 +22,14 @@ export class OlympicService {
     );
   }
 
-  getOlympics(): Observable<Olympic[] | null> {
+  getOlympics(): Observable<Olympic[]> {
     return this.olympics$.asObservable();
   }
 
   getCountryById(countryId: string): Observable<Olympic> {
     return this.olympics$.pipe(
       switchMap((olympics) => {
-        if (!olympics) {
+        if (olympics.length < 1) {
           return this.loadInitialData().pipe(
             map((loadedOlympics) => {
               return this.findCountryById(loadedOlympics, countryId);
@@ -46,7 +46,7 @@ export class OlympicService {
     )
   }
 
-  private findCountryById(olympics: Olympic[] | null, countryId: string): Olympic {
+  private findCountryById(olympics: Olympic[], countryId: string): Olympic {
     if (!olympics) {
       throw new Error('Olympics data not loaded!');
     }
@@ -57,7 +57,7 @@ export class OlympicService {
     return foundCountry;
   }
 
-  private handleError = (error: HttpErrorResponse): Observable<null> => {
+  private handleError = (error: HttpErrorResponse): Observable<Olympic[]> => {
     // improve error handling
     // can be useful to end loading state and let the user know something went wrong
     console.error("An error occured:", error.message);
@@ -66,7 +66,7 @@ export class OlympicService {
     } else {
       console.error(`Server-side returned code ${error.status}, body: `, error.error);
     }
-    this.olympics$.next(null);
-    return of(null);
+    this.olympics$.next([]);
+    return of([]);
   }
 }
