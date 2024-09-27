@@ -1,31 +1,41 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { catchError, shareReplay, tap } from 'rxjs/operators';
+import { Olympic } from '../models/Olympic';
 
 @Injectable({
   providedIn: 'root',
 })
+
 export class OlympicService {
   private olympicUrl = './assets/mock/olympic.json';
-  private olympics$ = new BehaviorSubject<any>(undefined);
+  private olympics$ = new BehaviorSubject<Olympic[] | null>(null);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  loadInitialData() {
-    return this.http.get<any>(this.olympicUrl).pipe(
+  loadInitialData(): Observable<Olympic[] | null> {
+    return this.http.get<Olympic[]>(this.olympicUrl).pipe(
       tap((value) => this.olympics$.next(value)),
-      catchError((error, caught) => {
-        // TODO: improve error handling
-        console.error(error);
-        // can be useful to end loading state and let the user know something went wrong
-        this.olympics$.next(null);
-        return caught;
-      })
+      shareReplay(1),
+      catchError(this.handleError)
     );
   }
 
-  getOlympics() {
+  getOlympics(): Observable<Olympic[] | null> {
     return this.olympics$.asObservable();
+  }
+
+  private handleError = (error: HttpErrorResponse): Observable<null> => {
+    // improve error handling
+    // can be useful to end loading state and let the user know something went wrong
+    console.error("An error occured:", error.message);
+    if (error.error instanceof ErrorEvent) {
+      console.error('Client-side or network error:', error.error.message)
+    } else {
+      console.error(`Server-side returned code ${error.status}, body: `, error.error);
+    }
+    this.olympics$.next(null);
+    return of(null);
   }
 }
