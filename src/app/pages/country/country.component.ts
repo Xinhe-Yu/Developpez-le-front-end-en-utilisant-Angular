@@ -32,7 +32,7 @@ export class CountryComponent {
   showYAxisLabel: boolean = true;
   showXAxisLabel: boolean = true;
   xAxisLabel: string = 'Année';
-  yAxisLabel: string = 'Médaille';
+  yAxisLabel: string = 'Médailles';
   timeline: boolean = true;
   autoscale: boolean = true;
   yScaleMin: number = 0;

@@ -11,6 +11,8 @@ body {
   background-color: #FAFAFA;
   font-family: Arial, Helvetica, sans-serif;
   letter-spacing: 1px;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .container {
@@ -42,7 +44,7 @@ $teal: #04838f;
 }
 
 .page-title {
-  font-size: 2rem;
+  font-size: 1.75rem;
   padding: 0.5rem;
   display: inline-block;
 }
@@ -61,9 +63,20 @@ $teal: #04838f;
 
 .card-title {
   font-weight: normal;
-  color: gray
+  color: gray;
+  margin-bottom: .5rem;
 }
 
 .card-content {
   font-weight: bold;
+}
+
+@media (max-width: 512px) {
+  body {
+    font-size: 14px;
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+  }
 }
