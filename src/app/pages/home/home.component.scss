@@ -1,0 +1,12 @@
+@import '../../../styles.scss';
+
+::ng-deep .ngx-charts-tooltip-content {
+  @extend .rounded;
+  background-color: $teal !important;
+  padding: 0.5rem;
+}
+
+.tooltip-icon {
+  width: 0.85rem;
+  margin-right: -0.25rem;
+}
