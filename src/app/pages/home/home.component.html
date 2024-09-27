@@ -1,7 +1,7 @@
 <div class="bg-teal rounded page-title">Medailles par pays</div>
 
 <div *ngIf="olympics$ | async as olympics">
-  <div class="two-cards">
+  <div class="cards">
 
     <div class="card">
       <h5 class="card-title">
@@ -27,7 +27,7 @@
     <div *ngIf="chartData.length > 0; else noData">
       <div class="chart">
         <ngx-charts-pie-chart [results]="chartData" [gradient]="gradient" [legend]="showLegend" [labels]="showLabels"
-          [doughnut]="isDoughnut" [maxLabelLength]="maxLabelLength">
+          [doughnut]="isDoughnut" [maxLabelLength]="maxLabelLength" (select)="onSelect($event)">
           <ng-template #tooltipTemplate let-model="model">
             <div class="custom-tooltip">
               <span class="tooltip-label">{{model.name}}</span>

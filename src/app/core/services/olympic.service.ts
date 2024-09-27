@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { catchError, shareReplay, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, map, throwError } from 'rxjs';
+import { catchError, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { Olympic } from '../models/Olympic';
 
 @Injectable({
@@ -24,6 +24,37 @@ export class OlympicService {
 
   getOlympics(): Observable<Olympic[] | null> {
     return this.olympics$.asObservable();
+  }
+
+  getCountryById(countryId: string): Observable<Olympic> {
+    return this.olympics$.pipe(
+      switchMap((olympics) => {
+        if (!olympics) {
+          return this.loadInitialData().pipe(
+            map((loadedOlympics) => {
+              return this.findCountryById(loadedOlympics, countryId);
+            })
+          );
+        } else {
+          return of(this.findCountryById(olympics, countryId))
+        }
+      }),
+      catchError(err => {
+        console.error(err);
+        return throwError(() => new Error('Country data loaded failed.'))
+      })
+    )
+  }
+
+  private findCountryById(olympics: Olympic[] | null, countryId: string): Olympic {
+    if (!olympics) {
+      throw new Error('Olympics data not loaded!');
+    }
+    const foundCountry = olympics.find((country) => country.id.toString() === countryId);
+    if (!foundCountry) {
+      throw new Error('Country not found!');
+    }
+    return foundCountry;
   }
 
   private handleError = (error: HttpErrorResponse): Observable<null> => {

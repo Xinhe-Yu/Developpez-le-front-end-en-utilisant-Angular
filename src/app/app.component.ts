@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { take } from 'rxjs';
 import { OlympicService } from './core/services/olympic.service';
 
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
 import { HeaderComponent } from "./header/header.component";
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -15,9 +16,16 @@ import { HeaderComponent } from "./header/header.component";
 })
 
 export class AppComponent implements OnInit {
-  constructor(private olympicService: OlympicService) { }
+  constructor(
+    private olympicService: OlympicService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
-    this.olympicService.loadInitialData().pipe(take(1)).subscribe();
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.olympicService.loadInitialData().pipe(take(1)).subscribe();
+    })
   }
 }
