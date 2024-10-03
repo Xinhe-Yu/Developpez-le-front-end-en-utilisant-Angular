@@ -4,13 +4,13 @@ import { OlympicService } from './core/services/olympic.service';
 
 import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
-import { HeaderComponent } from "./header/header.component";
+import { HeaderComponent } from "./components/header/header.component";
 import { filter } from 'rxjs';
-
+import { FooterComponent } from "./components/footer/footer.component";
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HomeComponent, HeaderComponent],
+  imports: [RouterOutlet, HomeComponent, HeaderComponent, FooterComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

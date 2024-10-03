@@ -38,6 +38,7 @@ export class CountryComponent implements OnInit, OnDestroy {
   autoscale: boolean = true;
   yScaleMin: number = 0;
   yScaleMax: number = 500;
+  animations: boolean = false;
   private countrySubscription!: Subscription;
 
   constructor(
