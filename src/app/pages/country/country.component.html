@@ -36,7 +36,8 @@
 
     <ngx-charts-line-chart [results]="chartData" [xAxis]="xAxis" [yAxis]="yAxis" [showXAxisLabel]="showXAxisLabel"
       [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [timeline]="timeline"
-      [autoScale]="autoscale" [yScaleMax]="yScaleMax" [yScaleMin]="yScaleMin" [yAxisTickFormatting]="formatYAxis">
+      [autoScale]="autoscale" [yScaleMax]="yScaleMax" [yScaleMin]="yScaleMin" [yAxisTickFormatting]="formatYAxis"
+      [animations]="animations">
       <ng-template #tooltipTemplate let-model="model">
         <div class="custom-tooltip">
           <div class="custom-tooltip">

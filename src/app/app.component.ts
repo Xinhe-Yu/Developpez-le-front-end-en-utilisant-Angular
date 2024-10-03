@@ -7,7 +7,6 @@ import { HomeComponent } from './pages/home/home.component';
 import { HeaderComponent } from "./components/header/header.component";
 import { filter } from 'rxjs';
 import { FooterComponent } from "./components/footer/footer.component";
-
 @Component({
   selector: 'app-root',
   standalone: true,
