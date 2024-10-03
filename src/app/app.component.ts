@@ -4,7 +4,7 @@ import { OlympicService } from './core/services/olympic.service';
 
 import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
-import { HeaderComponent } from "./header/header.component";
+import { HeaderComponent } from "./components/header/header.component";
 import { filter } from 'rxjs';
 
 @Component({
