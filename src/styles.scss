@@ -79,4 +79,19 @@ $teal: #04838f;
   .page-title {
     font-size: 1.5rem;
   }
+
+  .cards {
+    display: block;
+  }
+
+  .card {
+    padding: 0.5rem 2rem;
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 30px;
+  }
+
+  .card-title {
+    margin-bottom: 0;
+  }
 }
