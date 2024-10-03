@@ -4,12 +4,13 @@
   border-bottom: 1px solid lightgray;
 }
 
-h2 {
+h4 {
   letter-spacing: 0px !important;
+  padding-top: 0.25rem;
 }
 
 @media (max-width: 512px) {
-  h2 {
-    font-size: 1.25rem;
+  h4 {
+    font-size: 1.15rem;
   }
 }
