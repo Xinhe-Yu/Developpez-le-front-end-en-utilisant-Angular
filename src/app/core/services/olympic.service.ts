@@ -13,7 +13,10 @@ export class OlympicService {
   private olympicUrl = './assets/mock/olympic.json';
   private olympics$ = new BehaviorSubject<Olympic[]>([]);
 
-  constructor(private http: HttpClient, private errorMessageService: ErrorMessageService) { }
+  constructor(
+    private http: HttpClient,
+    private errorMessageService: ErrorMessageService
+  ) { }
 
   loadInitialData(): Observable<Olympic[]> {
     return this.http.get<Olympic[]>(this.olympicUrl).pipe(
@@ -31,6 +34,7 @@ export class OlympicService {
     return this.olympics$.pipe(
       switchMap((olympics) => {
         if (olympics.length < 1) {
+          // If no data is available, load it first
           return this.loadInitialData().pipe(
             map((loadedOlympics) => {
               return this.findCountryById(loadedOlympics, countryId);
@@ -40,8 +44,8 @@ export class OlympicService {
           return of(this.findCountryById(olympics, countryId))
         }
       }),
-      catchError(err => {
-        console.error(err);
+      catchError(() => {
+        this.handleError;
         return throwError(() => new Error('Country data loaded failed.'))
       })
     )
