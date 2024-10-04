@@ -22,7 +22,7 @@ export class OlympicService {
     return this.http.get<Olympic[]>(this.olympicUrl).pipe(
       tap((value) => this.olympics$.next(value)),
       shareReplay(1),
-      catchError(this.handleError)
+      catchError(this.handleInitError)
     );
   }
 
@@ -34,7 +34,6 @@ export class OlympicService {
     return this.olympics$.pipe(
       switchMap((olympics) => {
         if (olympics.length < 1) {
-          // If no data is available, load it first
           return this.loadInitialData().pipe(
             map((loadedOlympics) => {
               return this.findCountryById(loadedOlympics, countryId);
@@ -45,7 +44,7 @@ export class OlympicService {
         }
       }),
       catchError(() => {
-        this.handleError;
+        this.errorMessageService.showError('Country data loaded failed.');
         return throwError(() => new Error('Country data loaded failed.'))
       })
     )
@@ -53,16 +52,18 @@ export class OlympicService {
 
   private findCountryById(olympics: Olympic[], countryId: string): Olympic {
     if (!olympics) {
+      this.errorMessageService.showError('Olympics data not loaded!');
       throw new Error('Olympics data not loaded!');
     }
     const foundCountry = olympics.find((country) => country.id.toString() === countryId);
     if (!foundCountry) {
+      this.errorMessageService.showError('Country not found!');
       throw new Error('Country not found!');
     }
     return foundCountry;
   }
 
-  private handleError = (error: HttpErrorResponse): Observable<Olympic[]> => {
+  private handleInitError = (error: HttpErrorResponse): Observable<Olympic[]> => {
     console.error("An error occured:", error.message);
     let errorMessage = "";
     if (error.error instanceof ErrorEvent) {
