@@ -8,7 +8,7 @@ import { Olympic } from 'src/app/core/models/Olympic';
 import { LineChartData } from 'src/app/core/models/LineChartData';
 import { PieChartData } from 'src/app/core/models/PieChartData';
 import { Participation } from 'src/app/core/models/Participation';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-country',
   standalone: true,
@@ -43,14 +43,28 @@ export class CountryComponent implements OnInit, OnDestroy {
 
   constructor(
     private olympicService: OlympicService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
     this.getCountry();
-    this.countrySubscription = this.country$.subscribe((country: Olympic) => {
-      this.chartData = this.getChartData(country)
-    })
+    this.countrySubscription = this.country$.subscribe({
+      next: (country: Olympic) => {
+        if (!country) {
+          // Redirect to 'not-found' if the country is not found
+          this.router.navigate(['/not-found']);
+        } else {
+          // Update chart data with the found country
+          this.chartData = this.getChartData(country);
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching country:', err);
+        // Redirect to 'not-found' in case of any error
+        this.router.navigate(['/not-found']);
+      }
+    });
   }
 
   ngOnDestroy(): void {
