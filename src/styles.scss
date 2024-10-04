@@ -74,6 +74,23 @@ $teal: #04838f;
   font-weight: bold;
 }
 
+.btn-teal {
+  @extend .rounded;
+  border: 2px solid $teal;
+  text-decoration: none;
+  margin-top: 0;
+  padding: 0.5rem;
+  color: $teal;
+  transition: 0.2s all ease;
+  z-index: 999;
+}
+
+.btn-teal:hover {
+  color: #FAFAFA;
+  background-color: $teal;
+}
+
+
 @media (max-width: 512px) {
   body {
     font-size: 14px;
