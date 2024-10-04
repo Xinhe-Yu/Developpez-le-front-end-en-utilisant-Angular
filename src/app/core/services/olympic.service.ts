@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, map, throwError } from 'rxjs';
 import { catchError, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { Olympic } from '../models/Olympic';
+import { ErrorMessageService } from './error-message.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,7 @@ export class OlympicService {
   private olympicUrl = './assets/mock/olympic.json';
   private olympics$ = new BehaviorSubject<Olympic[]>([]);
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private errorMessageService: ErrorMessageService) { }
 
   loadInitialData(): Observable<Olympic[]> {
     return this.http.get<Olympic[]>(this.olympicUrl).pipe(
@@ -58,14 +59,16 @@ export class OlympicService {
   }
 
   private handleError = (error: HttpErrorResponse): Observable<Olympic[]> => {
-    // improve error handling
-    // can be useful to end loading state and let the user know something went wrong
     console.error("An error occured:", error.message);
+    let errorMessage = "";
     if (error.error instanceof ErrorEvent) {
-      console.error('Client-side or network error:', error.error.message)
+      errorMessage = `Client-side error: ${error.error.message}. Please check you network.`;
+      console.error(`Client-side error: ${error.error.message}`)
     } else {
-      console.error(`Server-side returned code ${error.status}, body: `, error.error);
+      errorMessage = `Server error: ${error.status}. Please try later.`;
+      console.error(`Server error: ${error.status}, Message: ${error.message}`);
     }
+    this.errorMessageService.showError(errorMessage);
     this.olympics$.next([]);
     return of([]);
   }
