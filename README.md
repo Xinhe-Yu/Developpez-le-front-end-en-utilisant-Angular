@@ -1,29 +1,35 @@
-# OlympicGamesStarter
+# OlympicGames
+The OlympicGames web application is an interactive platform that provides users with information about various countries participating in the Olympics, showcasing their respective Olympic data.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.0.3.
 
-Don't forget to install your node_modules before starting (`npm install`).
+## 1. Installation
+Ensure that you have the coorect version of **Angular** (check it with `ng version`) and compatible version of **Node.js** installed (version 16 or higher is recommended for Angular 18, you can check with `node -v`).
 
-## Development server
+After clone the rpository, you can follow the steps to install and run the application:
+1. Install dependencies: `npm install`
+2. Run the application: `ng serve`
+3. Open your browser and navigate to `http://localhost:4200/` to view the application.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## 2. Chosen External Libraries
+### [RxJS](https://rxjs.dev/)
+- **RxJS** is used for handling asynchronous programming with observables, making it easier to manage data streams and events in your application.
+- It provides a powerful way to work with events, asynchronous calls, and data streams.
 
-## Build
+### [ngx-charts](https://swimlane.gitbook.io/ngx-charts)
+- **ngx-charts** is a charting library for Angular applications, providing a variety of chart types and easy-to-use components to visualize data.
+- It allows for responsive, interactive charts that can be integrated seamlessly into your application.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## 3. Project Structure
+The application structure under the `src/app` directory is organized into three main folders:
+1. `models/`
 
-## Where to start
+- Contains TypeScript interfaces and classes for defining data types and services for data management.
 
-As you can see, an architecture has already been defined for the project. It is just a suggestion, you can choose to use your own. The predefined architecture includes (in addition to the default angular architecture) the following:
+2. `pages/`
 
-- `components` folder: contains every reusable components
-- `pages` folder: contains components used for routing
-- `core` folder: contains the business logic (`services` and `models` folders)
+- Holds components used for routing, representing different pages of the application (e.g., Home, Country details).
 
-I suggest you to start by understanding this starter code. Pay an extra attention to the `app-routing.module.ts` and the `olympic.service.ts`.
+3. `components/`
 
-Once mastered, you should continue by creating the typescript interfaces inside the `models` folder. As you can see I already created two files corresponding to the data included inside the `olympic.json`. With your interfaces, improve the code by replacing every `any` by the corresponding interface.
-
-You're now ready to implement the requested features.
-
-Good luck!
+- Contains reusable components used throughout the application (e.g., headers, footers, shared UI elements).
